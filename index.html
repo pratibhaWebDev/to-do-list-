@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #153677, #4e085f);
+            padding: 10px;
+        }
+
+        .box {
+            width: 30%;
+            min-width: 100px;
+            background: #fff;
+            margin: 100px auto 20px;
+            padding: 40px 30px 70px;
+            border-radius: 10px;
+        }
+
+        .box .heading {
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+            display: flex;
+        }
+
+        .box .heading h2 {
+            font-size: 25px;
+            color: #002765;
+
+        }
+
+        .heading .workIcon {
+            width: 45px;
+        }
+
+        .add {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #edeef0;
+            border-radius: 30px;
+            padding-left: 30px;
+            margin-bottom: 25px;
+            margin-top: 25px;
+            width: 100%;
+        }
+
+        .add input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 10px;
+            font-weight: 14px;
+            font-size: medium;
+        }
+
+        .btn {
+            background: #ff5945;
+            color: #fff;
+            padding: 16px 50px;
+            border-radius: 30px;
+            border: none;
+            outline: none;
+            font-size: medium;
+            cursor: pointer;
+        }
+
+        ul li {
+            list-style: none;
+            font-size: 17px;
+            padding: 12px 8px 12px 50px;
+            user-select: none;
+            cursor: pointer;
+            position: relative;
+        }
+
+        ul li::before {
+            content: '';
+            position: absolute;
+            height: 28px;
+            width: 28px;
+            border-radius: 50%;
+            background-image: url(images/unchecked.png);
+            background-size: cover;
+            background-position: center;
+            left: 8px;
+            top: 9px;
+        }
+
+        ul li.check {
+            color: #555;
+            text-decoration: line-through;
+        }
+
+        ul li.check::before {
+            background-image: url(images/checked.png);
+        }
+
+        ul li span {
+            position: absolute;
+            right: 0;
+            top: 5px;
+            width: 40px;
+            height: 40px;
+            font-size: 22px;
+            color: #555;
+            line-height: 40px;
+            text-align: center;
+        }
+
+        ul li span:hover {
+            background-color: #edeef0;
+            border-radius: 50%;
+        }
+
+        
+
+        
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="box">
+
+            <!-- heading section start -->
+            <div class="heading">
+                <h2>Work List </h2>
+                <img class="workIcon" src="images/icon.png" alt="">
+            </div>
+            <!-- heading section end -->
+
+            <!-- add section start -->
+            <div class="add">
+                <input type="text" id="input-box" placeholder="Enter work">
+                <button class="btn">Add</button>
+            </div>
+            <!-- add section end -->
+
+            <ul class="list-container">
+                <!-- <li class="check">Work 1</li> -->
+
+            </ul>
+        </div>
+
+    </div>
+
+
+
+</body>
+<script>
+    const inputBox = document.getElementById("input-box");
+    const addBtn = document.querySelector(".btn");
+    const ul = document.querySelector('.list-container')
+
+    const array = []
+
+    addBtn.addEventListener('click', (e) => {
+
+
+        const li = document.createElement("li")
+        const span = document.createElement("span")
+        // li.setAttribute("class","check")
+
+        const work = inputBox.value.trim();
+        if (work === "") {
+            alert("Please enter a work item.");
+            return;
+        }
+
+        array.push(work);
+        console.log(array);
+
+
+        array.forEach((i) => {
+            li.textContent = i
+            ul.appendChild(li);
+            span.textContent = "\u00d7"
+            li.appendChild(span)
+        })
+
+        inputBox.value = ""
+        saveData()
+    })
+
+    ul.addEventListener('click', (e) => {
+        if (e.target.tagName === "LI") {
+            e.target.classList.toggle("check")
+            saveData()
+        }
+        else if (e.target.tagName === "SPAN") {
+            e.target.parentElement.remove()
+            saveData()
+        }
+    }, false)
+
+    function saveData() {
+        localStorage.setItem("task", ul.innerHTML)
+    }
+
+    function showTask() {
+        ul.innerHTML = localStorage.getItem("task") || "";
+    }
+    showTask()
+
+
+</script>
+
+</html>
